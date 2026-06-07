@@ -1,18 +1,386 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WhatsMe</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b141a" />
+  <meta name="description" content="Abre WhatsApp sin guardar el número" />
+  <title>WhatsMe</title>
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100vh;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0b141a;
+    }
+
+    .chat-bg {
+      min-height: 100vh;
+      background-color: #0b141a;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .bubbles-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .bubble {
+      position: absolute;
+      border-radius: 12px;
+      font-size: 13px;
+      padding: 7px 12px;
+      max-width: 200px;
+      line-height: 1.4;
+      opacity: 0;
+      user-select: none;
+      transition: opacity 1s;
+      white-space: nowrap;
+    }
+
+    .bubble.sent {
+      background: #005c4b;
+      color: #d1f4cc;
+      border-radius: 12px 0 12px 12px;
+    }
+
+    .bubble.recv {
+      background: #1f2c34;
+      color: #e9edef;
+      border-radius: 0 12px 12px 12px;
+    }
+
+    .bubble .tick {
+      font-size: 10px;
+      color: #53bdeb;
+      margin-left: 6px;
+    }
+
+    .card {
+      position: relative;
+      z-index: 10;
+      background: #1f2c34;
+      border-radius: 20px;
+      padding: 2rem 1.75rem;
+      width: 100%;
+      max-width: 380px;
+      border: 1px solid #2a3942;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    }
+
+    .logo-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 0.5rem;
+    }
+
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: #25d366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .logo-icon svg {
+      width: 26px;
+      height: 26px;
+      fill: white;
+    }
+
+    .logo-text {
+      font-size: 26px;
+      font-weight: 700;
+      color: #e9edef;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-text span {
+      color: #25d366;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 13px;
+      color: #8696a0;
+      margin-bottom: 1.75rem;
+    }
+
+    .label {
+      font-size: 11px;
+      color: #8696a0;
+      margin-bottom: 6px;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .flag-select {
+      background: #2a3942;
+      border: 1px solid #3b4a54;
+      border-radius: 10px;
+      color: #e9edef;
+      font-size: 15px;
+      padding: 10px 8px;
+      cursor: pointer;
+      outline: none;
+      min-width: 90px;
+      transition: border-color 0.2s;
+    }
+
+    .flag-select:focus {
+      border-color: #25d366;
+    }
+
+    .phone-input {
+      flex: 1;
+      background: #2a3942;
+      border: 1px solid #3b4a54;
+      border-radius: 10px;
+      color: #e9edef;
+      font-size: 16px;
+      padding: 10px 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .phone-input::placeholder {
+      color: #506472;
+    }
+
+    .phone-input:focus {
+      border-color: #25d366;
+    }
+
+    .error {
+      font-size: 12px;
+      color: #ff6b6b;
+      margin-bottom: 10px;
+      padding-left: 4px;
+      display: none;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: #25d366;
+      color: #111b21;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.2s, transform 0.1s;
+      margin-top: 1rem;
+    }
+
+    .btn:hover { background: #22c35e; }
+    .btn:active { transform: scale(0.98); }
+
+    .btn svg {
+      width: 20px;
+      height: 20px;
+      fill: #111b21;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 1.25rem 0;
+    }
+
+    .divider hr {
+      flex: 1;
+      border: none;
+      border-top: 1px solid #2a3942;
+    }
+
+    .divider span {
+      font-size: 11px;
+      color: #506472;
+      white-space: nowrap;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: #506472;
+      margin-top: 1.25rem;
+      line-height: 1.6;
+    }
+
+    .footer a {
+      color: #25d366;
+      text-decoration: none;
+    }
+
+    @media (max-width: 420px) {
+      .card {
+        padding: 1.5rem 1.25rem;
+        border-radius: 16px;
+      }
+      .logo-text { font-size: 22px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Ingrese número de celular:</h1>
-        <input type="tel" id="phoneNumber" placeholder="8661234567" maxlength="10">
-        <p id="error" class="error"></p>
-        <button id="submitBtn">Ir al Chat</button>
+  <div class="chat-bg">
+    <div class="bubbles-layer" id="bubblesLayer"></div>
+
+    <div class="card">
+      <div class="logo-row">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.137.564 4.14 1.546 5.875L0 24l6.335-1.517A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-4.92-1.32l-.352-.21-3.76.9.94-3.657-.23-.375A9.816 9.816 0 012.182 12C2.182 6.572 6.572 2.182 12 2.182S21.818 6.572 21.818 12 17.428 21.818 12 21.818z"/>
+          </svg>
+        </div>
+        <div class="logo-text">Whats<span>Me</span></div>
+      </div>
+
+      <p class="subtitle">Abre WhatsApp sin guardar el número</p>
+
+      <div class="label">Número de celular</div>
+      <div class="input-row">
+        <select class="flag-select" id="countryCode" title="Código de país">
+          <option value="52">🇲🇽 +52</option>
+          <option value="1">🇺🇸 +1</option>
+          <option value="54">🇦🇷 +54</option>
+          <option value="57">🇨🇴 +57</option>
+          <option value="56">🇨🇱 +56</option>
+          <option value="51">🇵🇪 +51</option>
+          <option value="58">🇻🇪 +58</option>
+          <option value="34">🇪🇸 +34</option>
+          <option value="55">🇧🇷 +55</option>
+          <option value="593">🇪🇨 +593</option>
+          <option value="502">🇬🇹 +502</option>
+          <option value="503">🇸🇻 +503</option>
+          <option value="504">🇭🇳 +504</option>
+          <option value="505">🇳🇮 +505</option>
+          <option value="506">🇨🇷 +506</option>
+          <option value="507">🇵🇦 +507</option>
+          <option value="591">🇧🇴 +591</option>
+          <option value="595">🇵🇾 +595</option>
+          <option value="598">🇺🇾 +598</option>
+          <option value="44">🇬🇧 +44</option>
+          <option value="33">🇫🇷 +33</option>
+          <option value="49">🇩🇪 +49</option>
+          <option value="39">🇮🇹 +39</option>
+        </select>
+        <input
+          class="phone-input"
+          id="phone"
+          type="tel"
+          placeholder="Ej. 8441234567"
+          maxlength="15"
+          inputmode="numeric"
+          autocomplete="tel"
+        />
+      </div>
+      <div class="error" id="errorMsg">⚠️ Ingresa un número válido.</div>
+
+      <button class="btn" id="goBtn" onclick="openWhatsApp()">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.137.564 4.14 1.546 5.875L0 24l6.335-1.517A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-4.92-1.32l-.352-.21-3.76.9.94-3.657-.23-.375A9.816 9.816 0 012.182 12C2.182 6.572 6.572 2.182 12 2.182S21.818 6.572 21.818 12 17.428 21.818 12 21.818z"/>
+        </svg>
+        Ir al Chat
+      </button>
+
+      <p class="footer">
+        Sin guardar contactos &middot; Gratis &middot; Privado<br/>
+        <a href="https://wa.me" target="_blank" rel="noopener">WhatsApp Web</a>
+      </p>
     </div>
-    <script src="script.js"></script>
+  </div>
+
+  <script>
+    const msgs = [
+      "Hola! 👋", "¿Cómo estás?", "En camino 🚗", "Ok, ahorita llego",
+      "Gracias!", "Sí, claro que sí", "Un momento...", "Ya casi 😅",
+      "Buenas noches 🌙", "Perfecto!", "Nos vemos?", "Ok 👍",
+      "Jajaja 😂", "Qué onda!", "Todo bien por acá", "Oye, escríbeme",
+      "Te mando ubicación 📍", "Sale! 🙌", "Listo", "Ya vi tu mensaje",
+      "Ahorita te marco", "Va!", "De acuerdo 😊", "Estoy aquí",
+      "Un rato más", "¿Llegaste?", "Sí sí, ya voy", "Checado ✅"
+    ];
+
+    function createBubble() {
+      const layer = document.getElementById('bubblesLayer');
+      if (!layer) return;
+      const b = document.createElement('div');
+      const isSent = Math.random() > 0.5;
+      b.className = 'bubble ' + (isSent ? 'sent' : 'recv');
+      const msg = msgs[Math.floor(Math.random() * msgs.length)];
+      b.innerHTML = msg + (isSent ? '<span class="tick"> ✓✓</span>' : '');
+      b.style.top = (Math.random() * 88) + '%';
+      b.style.left = (Math.random() * 78) + '%';
+      layer.appendChild(b);
+      setTimeout(() => { b.style.opacity = (0.13 + Math.random() * 0.13).toFixed(2); }, 50);
+      const life = 3500 + Math.random() * 2500;
+      setTimeout(() => {
+        b.style.opacity = '0';
+        setTimeout(() => b.remove(), 1000);
+      }, life);
+    }
+
+    for (let i = 0; i < 14; i++) {
+      setTimeout(createBubble, i * 250);
+    }
+    setInterval(createBubble, 650);
+
+    function openWhatsApp() {
+      const phone = document.getElementById('phone').value.replace(/\D/g, '');
+      const code = document.getElementById('countryCode').value;
+      const err = document.getElementById('errorMsg');
+      if (phone.length < 7) {
+        err.style.display = 'block';
+        document.getElementById('phone').focus();
+        return;
+      }
+      err.style.display = 'none';
+      window.open('https://wa.me/' + code + phone, '_blank');
+    }
+
+    document.getElementById('phone').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') openWhatsApp();
+    });
+
+    document.getElementById('phone').addEventListener('input', function() {
+      document.getElementById('errorMsg').style.display = 'none';
+    });
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      });
+    }
+  </script>
 </body>
 </html>

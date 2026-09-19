@@ -940,7 +940,7 @@
 
         <div class="calendar-section">
             <h2 class="calendar-title">🎉 Calendario de Cumpleaños 🎉</h2>
-            <p class="calendar-subtitle">Haz clic en un día marcado para ver a los cumpleañeros</p>
+            <p class="calendar-subtitle" id="calendarSubtitle">Haz clic en un día marcado para ver a los cumpleañeros</p>
 
             <div class="calendar-grid" id="calendarGrid"></div>
 
@@ -977,9 +977,7 @@
 
     <script>
         // ============================================================
-        // ✅ AVATAR CON GORRITO DE CUMPLEAÑOS (uno solo para todos)
-        // Usa DiceBear "avataaars" con hat forzado al 100%
-        // El seed se basa en el nombre para que sea estable por persona
+        // ✅ AVATAR CON GORRITO DE CUMPLEAÑOS
         // ============================================================
         function avatarCumple(nombre) {
             const seed = encodeURIComponent(nombre);
@@ -1114,12 +1112,14 @@
         const monthEmojis = ["❄️", "💙", "🌷", "🌸", "🌼", "☀️", "🏖️", "🌊", "🍂", "🎃", "🍁", "🎄"];
         const dayLabels = ["L", "M", "M", "J", "V", "S", "D"];
 
+        // ✅ AÑO ACTUAL: ahora devuelve también el año dinámico
         function getTodayInfo() {
             const hoy = new Date();
             return {
                 mes: hoy.getMonth() + 1,
                 dia: hoy.getDate(),
-                mesIndex: hoy.getMonth()
+                mesIndex: hoy.getMonth(),
+                anio: hoy.getFullYear()
             };
         }
 
@@ -1145,7 +1145,7 @@
             return `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
         }
 
-        // ===== MODAL (sin botón de felicitar) =====
+        // ===== MODAL =====
         function openBirthdayModal(mesIndex, dia, personas) {
             const overlay = document.getElementById('modalOverlay');
             const title = document.getElementById('modalTitle');
@@ -1172,7 +1172,6 @@
                 nameDiv.classList.add('birthday-name');
                 nameDiv.innerHTML = `${persona.nombre}<small>¡Feliz cumpleaños! 🎂</small>`;
 
-                // ✅ Solo foto + nombre (sin botón)
                 personDiv.appendChild(photoDiv);
                 personDiv.appendChild(nameDiv);
                 peopleContainer.appendChild(personDiv);
@@ -1200,7 +1199,8 @@
         document.getElementById('modalClose').addEventListener('click', closeBirthdayModal);
 
         function showCelebrations() {
-            const { mes, dia, mesIndex } = getTodayInfo();
+            // ✅ AÑO ACTUAL: obtenemos también el año
+            const { mes, dia, mesIndex, anio } = getTodayInfo();
             const cumpleHoy = (birthdays[mes] && birthdays[mes][dia]) || [];
 
             const todayMode = document.getElementById('todayMode');
@@ -1254,9 +1254,10 @@
                 const mesesNombres = monthNames[mesIndex];
                 const emoji = monthEmojis[mesIndex];
 
-                title.textContent = `${emoji} Cumpleaños de ${mesesNombres} ${emoji}`;
+                title.textContent = `${emoji} Cumpleaños de ${mesesNombres} ${anio} ${emoji}`;
                 subtitle.textContent = `Descubre quiénes celebran su día este mes`;
-                document.getElementById('cmcTitle').textContent = mesesNombres;
+                // ✅ AÑO ACTUAL: mostramos el año en el título del mini-calendario
+                document.getElementById('cmcTitle').textContent = `${mesesNombres} ${anio}`;
 
                 const cmcGrid = document.getElementById('cmcGrid');
                 cmcGrid.innerHTML = '';
@@ -1268,7 +1269,8 @@
                     cmcGrid.appendChild(labelDiv);
                 });
 
-                const firstDay = new Date(2024, mesIndex, 1).getDay();
+                // ✅ AÑO ACTUAL: usamos el año dinámico
+                const firstDay = new Date(anio, mesIndex, 1).getDay();
                 const startOffset = (firstDay === 0) ? 6 : firstDay - 1;
 
                 for (let i = 0; i < startOffset; i++) {
@@ -1277,7 +1279,8 @@
                     cmcGrid.appendChild(empty);
                 }
 
-                const daysInMonth = new Date(2024, mes, 0).getDate();
+                // ✅ AÑO ACTUAL: días del mes según el año dinámico
+                const daysInMonth = new Date(anio, mes, 0).getDate();
 
                 for (let d = 1; d <= daysInMonth; d++) {
                     const dayDiv = document.createElement('div');
@@ -1355,7 +1358,12 @@
             const grid = document.getElementById('calendarGrid');
             grid.innerHTML = '';
 
-            const { mes: mesActual, dia: diaActual } = getTodayInfo();
+            // ✅ AÑO ACTUAL: obtenemos también el año
+            const { mes: mesActual, dia: diaActual, anio } = getTodayInfo();
+
+            // ✅ AÑO ACTUAL: actualizamos el subtítulo con el año
+            document.getElementById('calendarSubtitle').textContent =
+                `Calendario del año ${anio} · Haz clic en un día marcado para ver a los cumpleañeros`;
 
             for (let month = 1; month <= 12; month++) {
                 const monthDiv = document.createElement('div');
@@ -1363,7 +1371,8 @@
 
                 const monthName = document.createElement('div');
                 monthName.classList.add('month-name');
-                monthName.textContent = monthNames[month - 1];
+                // ✅ AÑO ACTUAL: mostramos el año junto al nombre del mes
+                monthName.textContent = `${monthNames[month - 1]} ${anio}`;
                 monthDiv.appendChild(monthName);
 
                 const daysGrid = document.createElement('div');
@@ -1376,7 +1385,8 @@
                     daysGrid.appendChild(labelDiv);
                 });
 
-                const firstDay = new Date(2024, month - 1, 1).getDay();
+                // ✅ AÑO ACTUAL: usamos el año dinámico
+                const firstDay = new Date(anio, month - 1, 1).getDay();
                 const startOffset = (firstDay === 0) ? 6 : firstDay - 1;
 
                 for (let i = 0; i < startOffset; i++) {
@@ -1385,7 +1395,8 @@
                     daysGrid.appendChild(empty);
                 }
 
-                const daysInMonth = new Date(2024, month, 0).getDate();
+                // ✅ AÑO ACTUAL: días del mes según el año dinámico
+                const daysInMonth = new Date(anio, month, 0).getDate();
                 const monthBirthdays = birthdays[month] || {};
 
                 for (let day = 1; day <= daysInMonth; day++) {

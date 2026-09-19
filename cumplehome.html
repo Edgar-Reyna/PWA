@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#4f46e5">
+    <title>¡Feliz Cumpleaños! 🎂</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html { -webkit-text-size-adjust: 100%; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #eef2ff, #e0e7ff, #c7d2fe);
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding: 20px 15px;
+            overflow-x: hidden;
+            color: #1e293b;
+        }
+
+        .confetti {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none; z-index: 0; overflow: hidden;
+        }
+        .confetti-piece {
+            position: absolute; width: 8px; height: 8px;
+            background: #6366f1; top: -10px; opacity: 0;
+            animation: confetti-fall 5s linear infinite;
+        }
+        @keyframes confetti-fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; position: relative; z-index: 1; }
+
+        .card {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            box-shadow: 0 20px 60px rgba(79, 70, 229, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+            padding: clamp(25px, 5vw, 45px) clamp(18px, 4vw, 35px);
+            text-align: center;
+            position: relative;
+            animation: card-appear 1s ease-out;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        @keyframes card-appear {
+            0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .balloon {
+            position: absolute;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            animation: float 3s ease-in-out infinite;
+            z-index: 2;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.08));
+            pointer-events: none;
+        }
+        .balloon-1 { top: 10px; left: 12px; animation-delay: 0s; }
+        .balloon-2 { top: 8px; right: 12px; animation-delay: 0.5s; }
+        .balloon-3 { bottom: 10px; left: 15px; animation-delay: 1s; }
+        .balloon-4 { bottom: 8px; right: 15px; animation-delay: 1.5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-12px) rotate(5deg); }
+        }
+
+        .celebrations-block {
+            position: relative;
+            padding: clamp(18px, 3vw, 25px) clamp(14px, 3vw, 20px);
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, rgba(238,242,255,0.7), rgba(224,231,255,0.5));
+            border: 2px dashed #a5b4fc;
+            border-radius: 20px;
+            animation: block-appear 0.9s ease-out;
+        }
+
+        @keyframes block-appear {
+            0% { opacity: 0; transform: translateY(15px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .celebrations-block::before,
+        .celebrations-block::after {
+            content: '✨';
+            position: absolute;
+            font-size: clamp(1.2rem, 2.8vw, 1.6rem);
+            animation: sparkle 2s infinite;
+            pointer-events: none;
+        }
+        .celebrations-block::before { top: 8px; left: 10px; }
+        .celebrations-block::after { bottom: 8px; right: 10px; animation-delay: 1s; }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.3; transform: scale(0.8) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1.2) rotate(20deg); }
+        }
+
+        .celebrations-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(1.6rem, 4.5vw, 2.2rem);
+            color: #4f46e5;
+            margin-bottom: 6px;
+            line-height: 1.2;
+            animation: bounce-title 2s infinite;
+        }
+        @keyframes bounce-title {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .celebrations-subtitle {
+            color: #4338ca;
+            font-weight: 300;
+            font-size: clamp(0.85rem, 2.3vw, 1rem);
+            margin-bottom: 18px;
+        }
+
+        .today-mode { display: none; }
+        .today-mode.active { display: block; }
+
+        .today-photos {
+            display: flex;
+            justify-content: center;
+            gap: 22px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .birthday-person {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            animation: person-appear 0.8s ease-out backwards;
+            background: rgba(255, 255, 255, 0.75);
+            padding: 15px 12px 12px;
+            border-radius: 20px;
+            border: 1px solid #e0e7ff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            min-width: 160px;
+            max-width: 200px;
+        }
+
+        .birthday-person:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.15);
+        }
+
+        .birthday-person:nth-child(1) { animation-delay: 0.1s; }
+        .birthday-person:nth-child(2) { animation-delay: 0.25s; }
+        .birthday-person:nth-child(3) { animation-delay: 0.4s; }
+        .birthday-person:nth-child(4) { animation-delay: 0.55s; }
+        .birthday-person:nth-child(5) { animation-delay: 0.7s; }
+        .birthday-person:nth-child(6) { animation-delay: 0.85s; }
+
+        @keyframes person-appear {
+            0% { opacity: 0; transform: translateY(20px) scale(0.8); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .birthday-photo {
+            width: clamp(90px, 20vw, 120px);
+            height: clamp(90px, 20vw, 120px);
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid #fff;
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.28), 0 0 0 3px #c7d2fe;
+            background: linear-gradient(135deg, #eef2ff, #c7d2fe);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            position: relative;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .birthday-photo::after {
+            content: '🎉';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            font-size: clamp(1rem, 2.6vw, 1.4rem);
+            animation: rotate-emoji 3s linear infinite;
+        }
+
+        @keyframes rotate-emoji {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .birthday-photo img,
+        .birthday-photo svg {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+
+        .birthday-photo:hover { transform: scale(1.05) rotate(-3deg); }
+
+        .birthday-name {
+            font-weight: 600;
+            color: #4f46e5;
+            font-size: clamp(0.78rem, 2vw, 0.92rem);
+            background: #fff;
+            padding: 6px 14px;
+            border-radius: 20px;
+            box-shadow: 0 3px 10px rgba(79, 70, 229, 0.15);
+            text-align: center;
+            line-height: 1.3;
+            max-width: 100%;
+            word-wrap: break-word;
+        }
+
+        .birthday-name small {
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 400;
+            color: #6366f1;
+            opacity: 0.85;
+            margin-top: 3px;
+        }
+
+        .btn-person-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            font-size: clamp(0.68rem, 1.7vw, 0.78rem);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.35);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            white-space: nowrap;
+            max-width: 100%;
+        }
+
+        .btn-person-whatsapp:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(37, 211, 102, 0.5);
+        }
+
+        .btn-person-whatsapp i { font-size: 1.05em; }
+
+        .month-mode { display: none; }
+        .month-mode.active { display: block; }
+
+        .current-month-calendar {
+            background: #fff;
+            border-radius: 16px;
+            padding: clamp(12px, 2.8vw, 18px);
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.08);
+            border: 1px solid #e0e7ff;
+            max-width: 460px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cmc-title {
+            text-align: center;
+            font-weight: 600;
+            color: #4f46e5;
+            margin-bottom: 10px;
+            font-size: clamp(0.95rem, 2.4vw, 1.05rem);
+        }
+
+        .cmc-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+
+        .cmc-day-label {
+            text-align: center;
+            font-size: clamp(0.6rem, 1.7vw, 0.72rem);
+            font-weight: 600;
+            color: #4338ca;
+            opacity: 0.6;
+            padding: 3px 0;
+        }
+
+        .cmc-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(0.68rem, 1.9vw, 0.82rem);
+            color: #334155;
+            border-radius: 50%;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .cmc-day.empty { visibility: hidden; }
+
+        .cmc-day.birthday {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 3px 8px rgba(79, 70, 229, 0.4);
+            animation: pulse-birthday 2s infinite;
+            cursor: pointer;
+        }
+
+        .cmc-day.today {
+            outline: 2px solid #f59e0b;
+            outline-offset: 1px;
+        }
+
+        .cmc-day .badge {
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            background: #f59e0b;
+            color: #fff;
+            font-size: 0.48rem;
+            font-weight: 700;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1.5px solid #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        .cmc-day.birthday::after {
+            content: attr(data-names);
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+            background: #312e81;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 400;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.2s ease;
+            z-index: 20;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .cmc-day.birthday:hover::after {
+            transform: translateX(-50%) scale(1);
+            opacity: 1;
+        }
+
+        .cmc-day.birthday:hover {
+            transform: scale(1.15);
+            z-index: 15;
+        }
+
+        @keyframes pulse-birthday {
+            0%, 100% { box-shadow: 0 3px 8px rgba(79, 70, 229, 0.4); }
+            50% { box-shadow: 0 3px 15px rgba(79, 70, 229, 0.7); }
+        }
+
+        .month-people {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .month-person {
+            background: #fff;
+            border-radius: 16px;
+            padding: 15px 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.08);
+            border: 1px solid #e0e7ff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: person-appear 0.6s ease-out backwards;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .month-person:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 22px rgba(79, 70, 229, 0.16);
+        }
+
+        .month-person .birthday-photo {
+            width: clamp(65px, 18vw, 85px);
+            height: clamp(65px, 18vw, 85px);
+            font-size: clamp(1.6rem, 5vw, 2.1rem);
+            margin: 0 auto;
+            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.22), 0 0 0 3px #c7d2fe;
+        }
+
+        .month-person .birthday-photo::after {
+            font-size: clamp(0.9rem, 2.6vw, 1.1rem);
+            top: -6px;
+            right: -6px;
+        }
+
+        .month-person .person-name {
+            font-weight: 600;
+            color: #4f46e5;
+            font-size: clamp(0.78rem, 2vw, 0.88rem);
+            line-height: 1.3;
+            word-wrap: break-word;
+        }
+
+        .month-person .person-date {
+            font-size: clamp(0.68rem, 1.9vw, 0.78rem);
+            color: #4338ca;
+            background: #eef2ff;
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .no-month-birthday {
+            text-align: center;
+            padding: 20px 12px;
+            color: #4338ca;
+        }
+
+        .no-month-birthday .emoji {
+            font-size: 2.2rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .no-month-birthday p {
+            font-size: clamp(0.85rem, 2.3vw, 0.95rem);
+            font-weight: 300;
+        }
+
+        .no-month-birthday strong {
+            color: #4f46e5;
+            font-weight: 600;
+        }
+
+        .main-content {
+            position: relative;
+            padding: 10px 5px;
+        }
+
+        .cake-icon {
+            font-size: clamp(2.8rem, 7.5vw, 4.2rem);
+            display: block;
+            margin-bottom: 10px;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(1.9rem, 6.5vw, 3rem);
+            color: #4f46e5;
+            margin-bottom: 8px;
+            line-height: 1.15;
+        }
+
+        .subtitle {
+            font-size: clamp(0.9rem, 2.6vw, 1.1rem);
+            color: #4338ca;
+            font-weight: 300;
+            margin-bottom: 22px;
+            letter-spacing: 0.3px;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .divider-line {
+            height: 2px;
+            width: clamp(40px, 15vw, 60px);
+            background: linear-gradient(90deg, transparent, #a5b4fc, transparent);
+        }
+        .divider i { color: #6366f1; font-size: 1.1rem; }
+
+        .message {
+            font-size: clamp(0.9rem, 2.4vw, 1.02rem);
+            color: #475569;
+            line-height: 1.75;
+            margin-bottom: 24px;
+            font-weight: 300;
+            max-width: 560px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .message strong { color: #4f46e5; font-weight: 600; }
+
+        .footer-card {
+            margin-top: 18px;
+            font-size: clamp(0.72rem, 1.9vw, 0.82rem);
+            color: #dc2626;
+            font-weight: 500;
+        }
+        .footer-card i {
+            color: #dc2626;
+            animation: heartbeat 1.5s infinite;
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .calendar-section {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            box-shadow: 0 20px 60px rgba(79, 70, 229, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+            padding: clamp(25px, 5vw, 35px) clamp(15px, 4vw, 25px);
+            animation: card-appear 1.2s ease-out;
+        }
+
+        .calendar-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(1.6rem, 5vw, 2.2rem);
+            color: #4f46e5;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .calendar-subtitle {
+            text-align: center;
+            color: #4338ca;
+            font-weight: 300;
+            font-size: clamp(0.8rem, 2.2vw, 0.9rem);
+            margin-bottom: 25px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .month {
+            background: #fff;
+            border-radius: 14px;
+            padding: 12px 8px;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.06);
+            border: 1px solid #e0e7ff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .month:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.12);
+        }
+
+        .month-name {
+            text-align: center;
+            font-weight: 600;
+            color: #4f46e5;
+            font-size: clamp(0.8rem, 2vw, 0.95rem);
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #eef2ff;
+            text-transform: capitalize;
+        }
+
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+        }
+
+        .day-label {
+            font-size: clamp(0.5rem, 1.3vw, 0.65rem);
+            text-align: center;
+            color: #4338ca;
+            font-weight: 600;
+            opacity: 0.6;
+            padding: 2px 0;
+        }
+
+        .day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(0.6rem, 1.6vw, 0.75rem);
+            color: #334155;
+            border-radius: 50%;
+            position: relative;
+            transition: all 0.2s ease;
+            cursor: default;
+        }
+
+        .day.empty { visibility: hidden; }
+
+        .day.birthday {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 3px 8px rgba(79, 70, 229, 0.4);
+            cursor: pointer;
+            animation: pulse-birthday 2s infinite;
+        }
+
+        .day.today {
+            outline: 2px solid #f59e0b;
+            outline-offset: 1px;
+        }
+
+        .day.birthday:hover {
+            transform: scale(1.2);
+            z-index: 5;
+            box-shadow: 0 5px 18px rgba(79, 70, 229, 0.7);
+        }
+
+        .day .badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #f59e0b;
+            color: #fff;
+            font-size: 0.5rem;
+            font-weight: 700;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1.5px solid #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .day.birthday::after {
+            content: attr(data-names);
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+            background: #312e81;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 400;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.2s ease;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .day.birthday:hover::after {
+            transform: translateX(-50%) scale(1);
+            opacity: 1;
+        }
+
+        .calendar-legend {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            margin-top: 22px;
+            flex-wrap: wrap;
+            font-size: clamp(0.72rem, 2vw, 0.82rem);
+            color: #4338ca;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .legend-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            flex-shrink: 0;
+        }
+        .legend-badge {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #f59e0b;
+            border: 2px solid #fff;
+            box-shadow: 0 0 0 1px #f59e0b;
+            flex-shrink: 0;
+        }
+        .legend-today {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid #f59e0b;
+            background: #fff;
+            flex-shrink: 0;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(30, 27, 75, 0.6);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: overlay-appear 0.3s ease-out;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        @keyframes overlay-appear {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #fff, #eef2ff);
+            border-radius: 28px;
+            box-shadow: 0 30px 80px rgba(79, 70, 229, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+            max-width: 720px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: clamp(25px, 5vw, 35px) clamp(18px, 4vw, 30px);
+            text-align: center;
+            position: relative;
+            animation: modal-appear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes modal-appear {
+            0% { opacity: 0; transform: scale(0.8) translateY(30px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            background: #fff;
+            border: 1px solid #e0e7ff;
+            color: #4f46e5;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+            box-shadow: 0 3px 10px rgba(79, 70, 229, 0.15);
+            z-index: 5;
+        }
+
+        .modal-close:hover {
+            background: #4f46e5;
+            color: #fff;
+            transform: rotate(90deg);
+        }
+
+        .modal-header {
+            margin-bottom: 22px;
+            padding-bottom: 16px;
+            border-bottom: 2px dashed #c7d2fe;
+        }
+
+        .modal-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(1.6rem, 5vw, 2.2rem);
+            color: #4f46e5;
+            margin-bottom: 6px;
+            line-height: 1.2;
+        }
+
+        .modal-subtitle {
+            color: #4338ca;
+            font-weight: 300;
+            font-size: clamp(0.85rem, 2.3vw, 1rem);
+        }
+
+        .modal-people {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .modal-person {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 18px 12px 14px;
+            border-radius: 20px;
+            border: 1px solid #e0e7ff;
+            min-width: 170px;
+            max-width: 200px;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.08);
+            animation: person-appear 0.5s ease-out backwards;
+        }
+
+        .modal-person:nth-child(1) { animation-delay: 0.1s; }
+        .modal-person:nth-child(2) { animation-delay: 0.2s; }
+        .modal-person:nth-child(3) { animation-delay: 0.3s; }
+        .modal-person:nth-child(4) { animation-delay: 0.4s; }
+        .modal-person:nth-child(5) { animation-delay: 0.5s; }
+        .modal-person:nth-child(6) { animation-delay: 0.6s; }
+
+        @media (max-width: 850px) {
+            .calendar-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        }
+
+        @media (max-width: 650px) {
+            body { padding: 15px 10px; }
+            .calendar-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .calendar-section { padding: 22px 14px; border-radius: 22px; }
+            .card { padding: 22px 16px; border-radius: 22px; }
+            .month { padding: 10px 6px; }
+            .today-photos { gap: 14px; }
+            .birthday-person { min-width: 140px; max-width: 170px; padding: 12px 10px 10px; }
+            .month-people { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .calendar-legend { gap: 12px; font-size: 0.75rem; }
+            .modal-person { min-width: 140px; max-width: 170px; padding: 14px 10px 10px; }
+            .modal-people { gap: 14px; }
+        }
+
+        @media (max-width: 400px) {
+            body { padding: 12px 8px; }
+            .calendar-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .month { padding: 8px 5px; }
+            .days-grid { gap: 1px; }
+            .today-photos { gap: 10px; }
+            .birthday-person { min-width: 130px; max-width: 150px; padding: 10px 8px 8px; }
+            .birthday-name { padding: 5px 12px; font-size: 0.75rem; }
+            .month-people { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .month-person { padding: 12px 8px; }
+            .modal-person { min-width: 130px; max-width: 150px; padding: 12px 8px 8px; }
+            .modal-people { gap: 10px; }
+        }
+
+        @media (hover: none) {
+            .day.birthday::after,
+            .day.birthday:hover::after,
+            .cmc-day.birthday::after,
+            .cmc-day.birthday:hover::after { display: none; }
+            .month:hover,
+            .month-person:hover,
+            .btn-person-whatsapp:hover,
+            .birthday-photo:hover,
+            .birthday-person:hover { transform: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="confetti" id="confetti"></div>
+
+    <div class="container">
+
+        <div class="card">
+            <span class="balloon balloon-1">🎈</span>
+            <span class="balloon balloon-2">🎈</span>
+            <span class="balloon balloon-3">🎈</span>
+            <span class="balloon balloon-4">🎈</span>
+
+            <div class="celebrations-block" id="celebrationsBlock">
+                <h2 class="celebrations-title" id="celebrationsTitle">🎉 ¡Hoy es un día especial! 🎉</h2>
+                <p class="celebrations-subtitle" id="celebrationsSubtitle">Celebramos a:</p>
+
+                <div class="today-mode" id="todayMode">
+                    <div class="today-photos" id="todayPhotos"></div>
+                </div>
+
+                <div class="month-mode" id="monthMode">
+                    <div class="current-month-calendar">
+                        <div class="cmc-title" id="cmcTitle"></div>
+                        <div class="cmc-grid" id="cmcGrid"></div>
+                    </div>
+                    <div class="month-people" id="monthPeople"></div>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <span class="cake-icon">🎂</span>
+
+                <h1>¡Feliz Cumpleaños!</h1>
+                <p class="subtitle">Un día especial para una persona especial</p>
+
+                <div class="divider">
+                    <span class="divider-line"></span>
+                    <i class="fas fa-star"></i>
+                    <span class="divider-line"></span>
+                </div>
+
+                <p class="message">
+                    Hoy celebramos <strong>tu día</strong>. Que este nuevo año de vida esté lleno de 
+                    <strong>alegrías</strong>, <strong>éxitos</strong> y momentos inolvidables. 
+                    ¡Que todos tus deseos se cumplan! ✨
+                </p>
+
+                <p class="footer-card">
+                    Hecho con <i class="fas fa-heart"></i> para ti
+                </p>
+            </div>
+        </div>
+
+        <div class="calendar-section">
+            <h2 class="calendar-title">🎉 Calendario de Cumpleaños 🎉</h2>
+            <p class="calendar-subtitle" id="calendarSubtitle">Haz clic en un día marcado para ver a los cumpleañeros</p>
+
+            <div class="calendar-grid" id="calendarGrid"></div>
+
+            <div class="calendar-legend">
+                <div class="legend-item">
+                    <span class="legend-dot"></span>
+                    <span>Cumpleaños</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-badge"></span>
+                    <span>Varios</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-today"></span>
+                    <span>Hoy</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content" id="modalContent">
+            <button class="modal-close" id="modalClose" aria-label="Cerrar">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">🎂 Cumpleaños</h3>
+                <p class="modal-subtitle" id="modalSubtitle"></p>
+            </div>
+            <div class="modal-people" id="modalPeople"></div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // ✅ AVATAR CON GORRITO DE CUMPLEAÑOS
+        // ============================================================
+        function avatarCumple(nombre) {
+            const seed = encodeURIComponent(nombre);
+            return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}` +
+                   `&accessories=hat&accessoriesProbability=100` +
+                   `&top=hat&hatColor=ec407a,6366f1,4f46e5,818cf8,3b82f6,f59e0b` +
+                   `&clothing=blazerAndSweater,collarAndSweater,graphicShirt,hoodie,overall,shirtCrewNeck,shirtScoopNeck,shirtVNeck` +
+                   `&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`;
+        }
+
+        const listaCruda = [
+            ["Irving Reyna Peralta", "03-01"],
+            ["Fernando Reyna Peña", "13-01"],
+            ["Christopher Sebastian Reyna", "22-01"],
+            ["Perla Peña", "29-01"],
+            ["Andre Mateo Reyna Rodriguez", "13-02"],
+            ["Adriana Sarahi Esquivel Reyna", "25-02"],
+            ["Ricardo Esquivel", "29-02"],
+            ["Edgar Eduardo Reyna Aguilar", "04-03"],
+            ["Martha Patricia Aguilar Lopez", "08-03"],
+            ["Natalia Reyna Peña", "15-03"],
+            ["Martha Elena", "05-04"],
+            ["Cruz Reyna Cerda", "03-05"],
+            ["Hilda Reyna Aguilar", "08-05"],
+            ["Cruz Enrique Reyna Aguilar", "27-05"],
+            ["Enrique Reyna Aguilar", "14-07"],
+            ["Hector Urbina", "14-07"],
+            ["Cesar Fernando Reyna Aguilar", "16-07"],
+            ["Valeria Lisseth Urbina Reyna", "01-08"],
+            ["Dora Aguilar Galvan", "12-09"],
+            ["Emily Nayeli Esquivel Reyna", "10-10"],
+            ["Juan Jesus Reyna Aguilar", "26-10"],
+            ["Gael Alejandro Reyna Rodriguez", "18-11"],
+            ["Jackeline Reyna Peralta", "02-12"],
+            ["Leslye Karina Esquivel Reyna", "14-12-"],
+            ["Marycruz Reyna Aguilar", "15-12"],
+            ["Jemimah Berenice Rodriguez Moran", "26-12"]
+        ];
+
+        const birthdays = {};
+        listaCruda.forEach(([nombre, fecha]) => {
+            const [dia, mes] = fecha.split('-').map(Number);
+            if (!birthdays[mes]) birthdays[mes] = {};
+            if (!birthdays[mes][dia]) birthdays[mes][dia] = [];
+            birthdays[mes][dia].push({
+                nombre: nombre.trim(),
+                foto: avatarCumple(nombre.trim())
+            });
+        });
+
+        const monthNames = [
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        ];
+
+        const monthEmojis = ["❄️", "💙", "🌷", "🌸", "🌼", "☀️", "🏖️", "🌊", "🍂", "🎃", "🍁", "🎄"];
+        const dayLabels = ["L", "M", "M", "J", "V", "S", "D"];
+
+        // ✅ AÑO ACTUAL: ahora devuelve también el año dinámico
+        function getTodayInfo() {
+            const hoy = new Date();
+            return {
+                mes: hoy.getMonth() + 1,
+                dia: hoy.getDate(),
+                mesIndex: hoy.getMonth(),
+                anio: hoy.getFullYear()
+            };
+        }
+
+        function createPhotoElement(persona) {
+            const photoDiv = document.createElement('div');
+            photoDiv.classList.add('birthday-photo');
+
+            if (persona.foto && (persona.foto.startsWith('http') || persona.foto.startsWith('data:'))) {
+                const img = document.createElement('img');
+                img.src = persona.foto;
+                img.alt = persona.nombre;
+                img.loading = 'lazy';
+                img.onerror = () => { photoDiv.innerHTML = '🎂'; };
+                photoDiv.appendChild(img);
+            } else {
+                photoDiv.textContent = persona.foto || '🎂';
+            }
+            return photoDiv;
+        }
+
+        function buildWhatsAppURL(nombre) {
+            const mensaje = `¡Feliz Cumpleaños ${nombre}! 🎂🎉 Que tengas un día maravilloso y que todos tus deseos se cumplan. ✨🎈`;
+            return `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
+        }
+
+        // ===== MODAL =====
+        function openBirthdayModal(mesIndex, dia, personas) {
+            const overlay = document.getElementById('modalOverlay');
+            const title = document.getElementById('modalTitle');
+            const subtitle = document.getElementById('modalSubtitle');
+            const peopleContainer = document.getElementById('modalPeople');
+
+            const mesesNombres = monthNames[mesIndex];
+
+            if (personas.length === 1) {
+                title.textContent = `🎂 ¡${personas[0].nombre} cumple años!`;
+            } else {
+                title.textContent = `🎂 ¡${personas.length} cumpleaños este día!`;
+            }
+            subtitle.textContent = `📅 ${dia} de ${mesesNombres}`;
+
+            peopleContainer.innerHTML = '';
+            personas.forEach(persona => {
+                const personDiv = document.createElement('div');
+                personDiv.classList.add('modal-person');
+
+                const photoDiv = createPhotoElement(persona);
+
+                const nameDiv = document.createElement('div');
+                nameDiv.classList.add('birthday-name');
+                nameDiv.innerHTML = `${persona.nombre}<small>¡Feliz cumpleaños! 🎂</small>`;
+
+                personDiv.appendChild(photoDiv);
+                personDiv.appendChild(nameDiv);
+                peopleContainer.appendChild(personDiv);
+            });
+
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            createExtraConfetti();
+        }
+
+        function closeBirthdayModal() {
+            const overlay = document.getElementById('modalOverlay');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('modalOverlay').addEventListener('click', (e) => {
+            if (e.target.id === 'modalOverlay') closeBirthdayModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeBirthdayModal();
+        });
+
+        document.getElementById('modalClose').addEventListener('click', closeBirthdayModal);
+
+        function showCelebrations() {
+            // ✅ AÑO ACTUAL: obtenemos también el año
+            const { mes, dia, mesIndex, anio } = getTodayInfo();
+            const cumpleHoy = (birthdays[mes] && birthdays[mes][dia]) || [];
+
+            const todayMode = document.getElementById('todayMode');
+            const monthMode = document.getElementById('monthMode');
+            const title = document.getElementById('celebrationsTitle');
+            const subtitle = document.getElementById('celebrationsSubtitle');
+
+            if (cumpleHoy.length > 0) {
+                todayMode.classList.add('active');
+                monthMode.classList.remove('active');
+
+                if (cumpleHoy.length === 1) {
+                    title.textContent = '🎉 ¡Hoy es un día especial! 🎉';
+                } else {
+                    title.textContent = `🎉 ¡Hoy cumplen ${cumpleHoy.length} personas! 🎉`;
+                }
+                subtitle.textContent = `¡Hoy ${dia} de ${monthNames[mesIndex]} celebramos a:`;
+
+                const photosContainer = document.getElementById('todayPhotos');
+                photosContainer.innerHTML = '';
+
+                cumpleHoy.forEach(persona => {
+                    const personDiv = document.createElement('div');
+                    personDiv.classList.add('birthday-person');
+
+                    const photoDiv = createPhotoElement(persona);
+
+                    const nameDiv = document.createElement('div');
+                    nameDiv.classList.add('birthday-name');
+                    nameDiv.innerHTML = `${persona.nombre}<small>¡Feliz cumpleaños! 🎂</small>`;
+
+                    const btnLink = document.createElement('a');
+                    btnLink.href = buildWhatsAppURL(persona.nombre);
+                    btnLink.target = '_blank';
+                    btnLink.rel = 'noopener noreferrer';
+                    btnLink.classList.add('btn-person-whatsapp');
+                    btnLink.innerHTML = `<i class="fab fa-whatsapp"></i> Felicitar`;
+
+                    personDiv.appendChild(photoDiv);
+                    personDiv.appendChild(nameDiv);
+                    personDiv.appendChild(btnLink);
+                    photosContainer.appendChild(personDiv);
+                });
+
+                setTimeout(createExtraConfetti, 500);
+            } else {
+                todayMode.classList.remove('active');
+                monthMode.classList.add('active');
+
+                const mesData = birthdays[mes] || {};
+                const mesesNombres = monthNames[mesIndex];
+                const emoji = monthEmojis[mesIndex];
+
+                title.textContent = `${emoji} Cumpleaños de ${mesesNombres} ${anio} ${emoji}`;
+                subtitle.textContent = `Descubre quiénes celebran su día este mes`;
+                // ✅ AÑO ACTUAL: mostramos el año en el título del mini-calendario
+                document.getElementById('cmcTitle').textContent = `${mesesNombres} ${anio}`;
+
+                const cmcGrid = document.getElementById('cmcGrid');
+                cmcGrid.innerHTML = '';
+
+                dayLabels.forEach(label => {
+                    const labelDiv = document.createElement('div');
+                    labelDiv.classList.add('cmc-day-label');
+                    labelDiv.textContent = label;
+                    cmcGrid.appendChild(labelDiv);
+                });
+
+                // ✅ AÑO ACTUAL: usamos el año dinámico
+                const firstDay = new Date(anio, mesIndex, 1).getDay();
+                const startOffset = (firstDay === 0) ? 6 : firstDay - 1;
+
+                for (let i = 0; i < startOffset; i++) {
+                    const empty = document.createElement('div');
+                    empty.classList.add('cmc-day', 'empty');
+                    cmcGrid.appendChild(empty);
+                }
+
+                // ✅ AÑO ACTUAL: días del mes según el año dinámico
+                const daysInMonth = new Date(anio, mes, 0).getDate();
+
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const dayDiv = document.createElement('div');
+                    dayDiv.classList.add('cmc-day');
+                    dayDiv.textContent = d;
+
+                    if (d === dia) dayDiv.classList.add('today');
+
+                    if (mesData[d]) {
+                        dayDiv.classList.add('birthday');
+                        const nombres = mesData[d].map(p => p.nombre);
+                        dayDiv.setAttribute('data-names', nombres.join(', '));
+                        dayDiv.title = nombres.join(', ');
+
+                        if (mesData[d].length > 1) {
+                            const badge = document.createElement('span');
+                            badge.classList.add('badge');
+                            badge.textContent = mesData[d].length;
+                            dayDiv.appendChild(badge);
+                        }
+                        dayDiv.addEventListener('click', () => {
+                            openBirthdayModal(mesIndex, d, mesData[d]);
+                        });
+                    }
+
+                    cmcGrid.appendChild(dayDiv);
+                }
+
+                const peopleContainer = document.getElementById('monthPeople');
+                peopleContainer.innerHTML = '';
+
+                const diasConCumple = Object.keys(mesData).map(Number).sort((a, b) => a - b);
+
+                if (diasConCumple.length === 0) {
+                    peopleContainer.innerHTML = `
+                        <div class="no-month-birthday" style="grid-column: 1 / -1;">
+                            <span class="emoji">🎈</span>
+                            <p>No hay cumpleaños registrados en <strong>${mesesNombres}</strong>.</p>
+                        </div>
+                    `;
+                } else {
+                    let delayIndex = 0;
+                    diasConCumple.forEach(d => {
+                        mesData[d].forEach(persona => {
+                            const personDiv = document.createElement('div');
+                            personDiv.classList.add('month-person');
+                            personDiv.style.animationDelay = (delayIndex * 0.03) + 's';
+                            delayIndex++;
+
+                            const photoDiv = createPhotoElement(persona);
+                            const nameDiv = document.createElement('div');
+                            nameDiv.classList.add('person-name');
+                            nameDiv.textContent = persona.nombre;
+
+                            const dateDiv = document.createElement('div');
+                            dateDiv.classList.add('person-date');
+                            dateDiv.textContent = `📅 ${d} ${mesesNombres.substring(0, 3)}`;
+
+                            personDiv.appendChild(photoDiv);
+                            personDiv.appendChild(nameDiv);
+                            personDiv.appendChild(dateDiv);
+                            personDiv.addEventListener('click', () => {
+                                openBirthdayModal(mesIndex, d, mesData[d]);
+                            });
+                            peopleContainer.appendChild(personDiv);
+                        });
+                    });
+                }
+
+                setTimeout(createExtraConfetti, 400);
+            }
+        }
+
+        function buildCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            grid.innerHTML = '';
+
+            // ✅ AÑO ACTUAL: obtenemos también el año
+            const { mes: mesActual, dia: diaActual, anio } = getTodayInfo();
+
+            // ✅ AÑO ACTUAL: actualizamos el subtítulo con el año
+            document.getElementById('calendarSubtitle').textContent =
+                `Calendario del año ${anio} · Haz clic en un día marcado para ver a los cumpleañeros`;
+
+            for (let month = 1; month <= 12; month++) {
+                const monthDiv = document.createElement('div');
+                monthDiv.classList.add('month');
+
+                const monthName = document.createElement('div');
+                monthName.classList.add('month-name');
+                // ✅ AÑO ACTUAL: mostramos el año junto al nombre del mes
+                monthName.textContent = `${monthNames[month - 1]} ${anio}`;
+                monthDiv.appendChild(monthName);
+
+                const daysGrid = document.createElement('div');
+                daysGrid.classList.add('days-grid');
+
+                dayLabels.forEach(label => {
+                    const labelDiv = document.createElement('div');
+                    labelDiv.classList.add('day-label');
+                    labelDiv.textContent = label;
+                    daysGrid.appendChild(labelDiv);
+                });
+
+                // ✅ AÑO ACTUAL: usamos el año dinámico
+                const firstDay = new Date(anio, month - 1, 1).getDay();
+                const startOffset = (firstDay === 0) ? 6 : firstDay - 1;
+
+                for (let i = 0; i < startOffset; i++) {
+                    const empty = document.createElement('div');
+                    empty.classList.add('day', 'empty');
+                    daysGrid.appendChild(empty);
+                }
+
+                // ✅ AÑO ACTUAL: días del mes según el año dinámico
+                const daysInMonth = new Date(anio, month, 0).getDate();
+                const monthBirthdays = birthdays[month] || {};
+
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dayDiv = document.createElement('div');
+                    dayDiv.classList.add('day');
+                    dayDiv.textContent = day;
+
+                    if (month === mesActual && day === diaActual) {
+                        dayDiv.classList.add('today');
+                    }
+
+                    if (monthBirthdays[day]) {
+                        dayDiv.classList.add('birthday');
+                        const personas = monthBirthdays[day];
+                        const nombres = personas.map(p => p.nombre);
+                        dayDiv.setAttribute('data-names', nombres.join(', '));
+                        dayDiv.title = nombres.join(', ');
+
+                        if (personas.length > 1) {
+                            const badge = document.createElement('span');
+                            badge.classList.add('badge');
+                            badge.textContent = personas.length;
+                            dayDiv.appendChild(badge);
+                        }
+
+                        dayDiv.addEventListener('click', () => {
+                            openBirthdayModal(month - 1, day, personas);
+                        });
+                    }
+
+                    daysGrid.appendChild(dayDiv);
+                }
+
+                monthDiv.appendChild(daysGrid);
+                grid.appendChild(monthDiv);
+            }
+        }
+
+        function createConfetti() {
+            const confettiContainer = document.getElementById('confetti');
+            const colors = ['#6366f1', '#818cf8', '#a5b4fc', '#c7d2fe', '#4f46e5', '#4338ca', '#e0e7ff'];
+
+            for (let i = 0; i < 45; i++) {
+                const piece = document.createElement('div');
+                piece.classList.add('confetti-piece');
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                const size = Math.random() * 7 + 5;
+                piece.style.width = size + 'px';
+                piece.style.height = size + 'px';
+                if (Math.random() > 0.5) piece.style.borderRadius = '50%';
+                piece.style.animationDelay = Math.random() * 5 + 's';
+                piece.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                confettiContainer.appendChild(piece);
+            }
+        }
+
+        function createExtraConfetti() {
+            const confettiContainer = document.getElementById('confetti');
+            const colors = ['#6366f1', '#818cf8', '#a5b4fc', '#4f46e5', '#f59e0b'];
+
+            for (let i = 0; i < 25; i++) {
+                const piece = document.createElement('div');
+                piece.classList.add('confetti-piece');
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                const size = Math.random() * 9 + 5;
+                piece.style.width = size + 'px';
+                piece.style.height = size + 'px';
+                if (Math.random() > 0.5) piece.style.borderRadius = '50%';
+                piece.style.animationDelay = Math.random() * 0.5 + 's';
+                piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                confettiContainer.appendChild(piece);
+                setTimeout(() => piece.remove(), 5000);
+            }
+        }
+
+        createConfetti();
+        showCelebrations();
+        buildCalendar();
+    </script>
+</body>
+</html>

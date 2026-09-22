@@ -2,11 +2,15 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#4f46e5">
     <title>¡Feliz Cumpleaños! 🎂</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         html { -webkit-text-size-adjust: 100%; }
@@ -199,11 +203,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        .birthday-photo img,
-        .birthday-photo svg {
-            width: 100%; height: 100%; object-fit: cover;
-        }
-
         .birthday-photo:hover { transform: scale(1.05) rotate(-3deg); }
 
         .birthday-name {
@@ -353,15 +352,14 @@
             border-radius: 8px;
             font-size: 0.7rem;
             font-weight: 400;
-            white-space: nowrap;
+            white-space: normal;
             opacity: 0;
             pointer-events: none;
             transition: all 0.2s ease;
             z-index: 20;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            max-width: 180px;
+            text-align: center;
         }
 
         .cmc-day.birthday:hover::after {
@@ -412,7 +410,6 @@
             height: clamp(65px, 18vw, 85px);
             font-size: clamp(1.6rem, 5vw, 2.1rem);
             margin: 0 auto;
-            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.22), 0 0 0 3px #c7d2fe;
         }
 
         .month-person .birthday-photo::after {
@@ -460,6 +457,89 @@
             color: #4f46e5;
             font-weight: 600;
         }
+
+        /* ============================================================
+           SIGNO ZODIACAL — Colores por elemento
+           ============================================================ */
+        .birthday-photo.zodiac-photo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            border: 4px solid #fff;
+            overflow: hidden;
+            padding: 4px;
+        }
+
+        .zodiac-emoji {
+            font-size: clamp(2rem, 5.5vw, 2.8rem);
+            line-height: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .birthday-photo.zodiac-photo:hover .zodiac-emoji {
+            transform: scale(1.15) rotate(-5deg);
+        }
+
+        .zodiac-name {
+            font-size: clamp(0.55rem, 1.5vw, 0.65rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            text-align: center;
+            line-height: 1.1;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .month-person .birthday-photo.zodiac-photo {
+            width: clamp(65px, 18vw, 85px);
+            height: clamp(65px, 18vw, 85px);
+            padding: 2px;
+        }
+
+        .month-person .zodiac-emoji {
+            font-size: clamp(1.5rem, 4.5vw, 2rem);
+        }
+
+        .month-person .zodiac-name {
+            font-size: 0.5rem;
+        }
+
+        /* 🔥 FUEGO — Aries, Leo, Sagitario */
+        .elemento-fuego {
+            background: linear-gradient(135deg, #fff7ed, #fed7aa, #fb923c) !important;
+            box-shadow: 0 8px 25px rgba(234, 88, 12, 0.35), 0 0 0 3px #fdba74 !important;
+        }
+        .elemento-fuego .zodiac-emoji { color: #c2410c; text-shadow: 0 2px 4px rgba(234, 88, 12, 0.3); }
+        .elemento-fuego .zodiac-name  { color: #9a3412; }
+
+        /* 🌍 TIERRA — Tauro, Virgo, Capricornio */
+        .elemento-tierra {
+            background: linear-gradient(135deg, #f0fdf4, #bbf7d0, #4ade80) !important;
+            box-shadow: 0 8px 25px rgba(22, 163, 74, 0.35), 0 0 0 3px #86efac !important;
+        }
+        .elemento-tierra .zodiac-emoji { color: #15803d; text-shadow: 0 2px 4px rgba(22, 163, 74, 0.3); }
+        .elemento-tierra .zodiac-name  { color: #166534; }
+
+        /* 💨 AIRE — Géminis, Libra, Acuario */
+        .elemento-aire {
+            background: linear-gradient(135deg, #f0f9ff, #bae6fd, #38bdf8) !important;
+            box-shadow: 0 8px 25px rgba(2, 132, 199, 0.35), 0 0 0 3px #7dd3fc !important;
+        }
+        .elemento-aire .zodiac-emoji { color: #0369a1; text-shadow: 0 2px 4px rgba(2, 132, 199, 0.3); }
+        .elemento-aire .zodiac-name  { color: #075985; }
+
+        /* 💧 AGUA — Cáncer, Escorpio, Piscis */
+        .elemento-agua {
+            background: linear-gradient(135deg, #eef2ff, #c7d2fe, #818cf8) !important;
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.35), 0 0 0 3px #a5b4fc !important;
+        }
+        .elemento-agua .zodiac-emoji { color: #4338ca; text-shadow: 0 2px 4px rgba(79, 70, 229, 0.3); }
+        .elemento-agua .zodiac-name  { color: #3730a3; }
 
         .main-content {
             position: relative;
@@ -633,10 +713,13 @@
             outline-offset: 1px;
         }
 
-        .day.birthday:hover {
+        .day.birthday:hover,
+        .day.birthday:focus {
             transform: scale(1.2);
             z-index: 5;
             box-shadow: 0 5px 18px rgba(79, 70, 229, 0.7);
+            outline: 2px solid #f59e0b;
+            outline-offset: 2px;
         }
 
         .day .badge {
@@ -669,15 +752,14 @@
             border-radius: 8px;
             font-size: 0.7rem;
             font-weight: 400;
-            white-space: nowrap;
+            white-space: normal;
             opacity: 0;
             pointer-events: none;
             transition: all 0.2s ease;
             z-index: 10;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            max-width: 180px;
+            text-align: center;
         }
         .day.birthday:hover::after {
             transform: translateX(-50%) scale(1);
@@ -883,6 +965,15 @@
             .birthday-photo:hover,
             .birthday-person:hover { transform: none; }
         }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            .confetti { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -892,10 +983,10 @@
     <div class="container">
 
         <div class="card">
-            <span class="balloon balloon-1">🎈</span>
-            <span class="balloon balloon-2">🎈</span>
-            <span class="balloon balloon-3">🎈</span>
-            <span class="balloon balloon-4">🎈</span>
+            <span class="balloon balloon-1" aria-hidden="true">🎈</span>
+            <span class="balloon balloon-2" aria-hidden="true">🎈</span>
+            <span class="balloon balloon-3" aria-hidden="true">🎈</span>
+            <span class="balloon balloon-4" aria-hidden="true">🎈</span>
 
             <div class="celebrations-block" id="celebrationsBlock">
                 <h2 class="celebrations-title" id="celebrationsTitle">🎉 ¡Hoy es un día especial! 🎉</h2>
@@ -915,14 +1006,14 @@
             </div>
 
             <div class="main-content">
-                <span class="cake-icon">🎂</span>
+                <span class="cake-icon" aria-hidden="true">🎂</span>
 
                 <h1>¡Feliz Cumpleaños!</h1>
                 <p class="subtitle">Un día especial para una persona especial</p>
 
                 <div class="divider">
                     <span class="divider-line"></span>
-                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star" aria-hidden="true"></i>
                     <span class="divider-line"></span>
                 </div>
 
@@ -933,7 +1024,7 @@
                 </p>
 
                 <p class="footer-card">
-                    Hecho con <i class="fas fa-heart"></i> para ti
+                    Hecho con <i class="fas fa-heart" aria-hidden="true"></i> para ti
                 </p>
             </div>
         </div>
@@ -957,6 +1048,22 @@
                     <span class="legend-today"></span>
                     <span>Hoy</span>
                 </div>
+                <div class="legend-item">
+                    <span class="legend-element legend-element-fuego" title="Fuego">🔥</span>
+                    <span>Fuego</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-element legend-element-tierra" title="Tierra">🌍</span>
+                    <span>Tierra</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-element legend-element-aire" title="Aire">💨</span>
+                    <span>Aire</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-element legend-element-agua" title="Agua">💧</span>
+                    <span>Agua</span>
+                </div>
             </div>
         </div>
 
@@ -965,7 +1072,7 @@
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content" id="modalContent">
             <button class="modal-close" id="modalClose" aria-label="Cerrar">
-                <i class="fas fa-times"></i>
+                <i class="fas fa-times" aria-hidden="true"></i>
             </button>
             <div class="modal-header">
                 <h3 class="modal-title" id="modalTitle">🎂 Cumpleaños</h3>
@@ -977,17 +1084,52 @@
 
     <script>
         // ============================================================
-        // ✅ AVATAR CON GORRITO DE CUMPLEAÑOS
+        // ✅ SIGNOS ZODIACALES CON ELEMENTO
         // ============================================================
-        function avatarCumple(nombre) {
-            const seed = encodeURIComponent(nombre);
-            return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}` +
-                   `&accessories=hat&accessoriesProbability=100` +
-                   `&top=hat&hatColor=ec407a,6366f1,4f46e5,818cf8,3b82f6,f59e0b` +
-                   `&clothing=blazerAndSweater,collarAndSweater,graphicShirt,hoodie,overall,shirtCrewNeck,shirtScoopNeck,shirtVNeck` +
-                   `&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`;
+        const ZODIAC_SIGNS = [
+            { nombre: "Capricornio", emoji: "♑", inicio: [12, 22], fin: [1, 19],  elemento: "tierra" },
+            { nombre: "Acuario",     emoji: "♒", inicio: [1, 20],  fin: [2, 18],  elemento: "aire"   },
+            { nombre: "Piscis",      emoji: "♓", inicio: [2, 19],  fin: [3, 20],  elemento: "agua"   },
+            { nombre: "Aries",       emoji: "♈", inicio: [3, 21],  fin: [4, 19],  elemento: "fuego"  },
+            { nombre: "Tauro",       emoji: "♉", inicio: [4, 20],  fin: [5, 20],  elemento: "tierra" },
+            { nombre: "Géminis",     emoji: "♊", inicio: [5, 21],  fin: [6, 20],  elemento: "aire"   },
+            { nombre: "Cáncer",      emoji: "♋", inicio: [6, 21],  fin: [7, 22],  elemento: "agua"   },
+            { nombre: "Leo",         emoji: "♌", inicio: [7, 23],  fin: [8, 22],  elemento: "fuego"  },
+            { nombre: "Virgo",       emoji: "♍", inicio: [8, 23],  fin: [9, 22],  elemento: "tierra" },
+            { nombre: "Libra",       emoji: "♎", inicio: [9, 23],  fin: [10, 22], elemento: "aire"   },
+            { nombre: "Escorpio",    emoji: "♏", inicio: [10, 23], fin: [11, 21], elemento: "agua"   },
+            { nombre: "Sagitario",   emoji: "♐", inicio: [11, 22], fin: [12, 21], elemento: "fuego"  }
+        ];
+
+        const ELEMENTO_EMOJI = {
+            fuego:  "🔥",
+            tierra: "🌍",
+            aire:   "💨",
+            agua:   "💧"
+        };
+
+        function getZodiacSign(dia, mes) {
+            for (const signo of ZODIAC_SIGNS) {
+                const [mesIni, diaIni] = signo.inicio;
+                const [mesFin, diaFin] = signo.fin;
+
+                if (mesIni === 12 && mesFin === 1) {
+                    if ((mes === 12 && dia >= diaIni) || (mes === 1 && dia <= diaFin)) {
+                        return signo;
+                    }
+                    continue;
+                }
+
+                if ((mes === mesIni && dia >= diaIni) || (mes === mesFin && dia <= diaFin)) {
+                    return signo;
+                }
+            }
+            return { nombre: "Desconocido", emoji: "❓", elemento: "agua" };
         }
 
+        // ============================================================
+        // LISTA DE CUMPLEAÑOS
+        // ============================================================
         const listaCruda = [
             ["Jose Enrique Saucedo Muñoz", "01-01"],
             ["Maria Andrea Montoya Camacho", "02-01"],
@@ -1098,9 +1240,10 @@
             const [dia, mes] = fecha.split('-').map(Number);
             if (!birthdays[mes]) birthdays[mes] = {};
             if (!birthdays[mes][dia]) birthdays[mes][dia] = [];
+            const signo = getZodiacSign(dia, mes);
             birthdays[mes][dia].push({
                 nombre: nombre.trim(),
-                foto: avatarCumple(nombre.trim())
+                signo: signo
             });
         });
 
@@ -1112,7 +1255,6 @@
         const monthEmojis = ["❄️", "💙", "🌷", "🌸", "🌼", "☀️", "🏖️", "🌊", "🍂", "🎃", "🍁", "🎄"];
         const dayLabels = ["L", "M", "M", "J", "V", "S", "D"];
 
-        // ✅ AÑO ACTUAL: ahora devuelve también el año dinámico
         function getTodayInfo() {
             const hoy = new Date();
             return {
@@ -1123,21 +1265,28 @@
             };
         }
 
-        function createPhotoElement(persona) {
-            const photoDiv = document.createElement('div');
-            photoDiv.classList.add('birthday-photo');
+        // ✅ Crea el elemento circular con el signo zodiacal + color por elemento
+        function createZodiacElement(persona) {
+            const div = document.createElement('div');
+            div.classList.add('birthday-photo', 'zodiac-photo', `elemento-${persona.signo.elemento}`);
+            const elementoEmoji = ELEMENTO_EMOJI[persona.signo.elemento] || '✨';
+            div.setAttribute('aria-label',
+                `Signo zodiacal: ${persona.signo.nombre}. Elemento: ${persona.signo.elemento} ${elementoEmoji}`);
+            div.setAttribute('title',
+                `${persona.signo.nombre} · ${persona.signo.elemento} ${elementoEmoji}`);
 
-            if (persona.foto && (persona.foto.startsWith('http') || persona.foto.startsWith('data:'))) {
-                const img = document.createElement('img');
-                img.src = persona.foto;
-                img.alt = persona.nombre;
-                img.loading = 'lazy';
-                img.onerror = () => { photoDiv.innerHTML = '🎂'; };
-                photoDiv.appendChild(img);
-            } else {
-                photoDiv.textContent = persona.foto || '🎂';
-            }
-            return photoDiv;
+            const emoji = document.createElement('span');
+            emoji.classList.add('zodiac-emoji');
+            emoji.textContent = persona.signo.emoji;
+            emoji.setAttribute('aria-hidden', 'true');
+
+            const nombre = document.createElement('span');
+            nombre.classList.add('zodiac-name');
+            nombre.textContent = persona.signo.nombre;
+
+            div.appendChild(emoji);
+            div.appendChild(nombre);
+            return div;
         }
 
         function buildWhatsAppURL(nombre) {
@@ -1166,11 +1315,12 @@
                 const personDiv = document.createElement('div');
                 personDiv.classList.add('modal-person');
 
-                const photoDiv = createPhotoElement(persona);
+                const photoDiv = createZodiacElement(persona);
 
+                const elementoEmoji = ELEMENTO_EMOJI[persona.signo.elemento] || '✨';
                 const nameDiv = document.createElement('div');
                 nameDiv.classList.add('birthday-name');
-                nameDiv.innerHTML = `${persona.nombre}<small>¡Feliz cumpleaños! 🎂</small>`;
+                nameDiv.innerHTML = `${persona.nombre}<small>${persona.signo.emoji} ${persona.signo.nombre} · ${elementoEmoji} ${persona.signo.elemento}</small>`;
 
                 personDiv.appendChild(photoDiv);
                 personDiv.appendChild(nameDiv);
@@ -1199,7 +1349,6 @@
         document.getElementById('modalClose').addEventListener('click', closeBirthdayModal);
 
         function showCelebrations() {
-            // ✅ AÑO ACTUAL: obtenemos también el año
             const { mes, dia, mesIndex, anio } = getTodayInfo();
             const cumpleHoy = (birthdays[mes] && birthdays[mes][dia]) || [];
 
@@ -1226,18 +1375,19 @@
                     const personDiv = document.createElement('div');
                     personDiv.classList.add('birthday-person');
 
-                    const photoDiv = createPhotoElement(persona);
+                    const photoDiv = createZodiacElement(persona);
 
+                    const elementoEmoji = ELEMENTO_EMOJI[persona.signo.elemento] || '✨';
                     const nameDiv = document.createElement('div');
                     nameDiv.classList.add('birthday-name');
-                    nameDiv.innerHTML = `${persona.nombre}<small>¡Feliz cumpleaños! 🎂</small>`;
+                    nameDiv.innerHTML = `${persona.nombre}<small>${persona.signo.emoji} ${persona.signo.nombre} · ${elementoEmoji} ${persona.signo.elemento}</small>`;
 
                     const btnLink = document.createElement('a');
                     btnLink.href = buildWhatsAppURL(persona.nombre);
                     btnLink.target = '_blank';
                     btnLink.rel = 'noopener noreferrer';
                     btnLink.classList.add('btn-person-whatsapp');
-                    btnLink.innerHTML = `<i class="fab fa-whatsapp"></i> Felicitar`;
+                    btnLink.innerHTML = `<i class="fab fa-whatsapp" aria-hidden="true"></i> Felicitar`;
 
                     personDiv.appendChild(photoDiv);
                     personDiv.appendChild(nameDiv);
@@ -1256,7 +1406,6 @@
 
                 title.textContent = `${emoji} Cumpleaños de ${mesesNombres} ${anio} ${emoji}`;
                 subtitle.textContent = `Descubre quiénes celebran su día este mes`;
-                // ✅ AÑO ACTUAL: mostramos el año en el título del mini-calendario
                 document.getElementById('cmcTitle').textContent = `${mesesNombres} ${anio}`;
 
                 const cmcGrid = document.getElementById('cmcGrid');
@@ -1269,7 +1418,6 @@
                     cmcGrid.appendChild(labelDiv);
                 });
 
-                // ✅ AÑO ACTUAL: usamos el año dinámico
                 const firstDay = new Date(anio, mesIndex, 1).getDay();
                 const startOffset = (firstDay === 0) ? 6 : firstDay - 1;
 
@@ -1279,7 +1427,6 @@
                     cmcGrid.appendChild(empty);
                 }
 
-                // ✅ AÑO ACTUAL: días del mes según el año dinámico
                 const daysInMonth = new Date(anio, mes, 0).getDate();
 
                 for (let d = 1; d <= daysInMonth; d++) {
@@ -1330,7 +1477,7 @@
                             personDiv.style.animationDelay = (delayIndex * 0.03) + 's';
                             delayIndex++;
 
-                            const photoDiv = createPhotoElement(persona);
+                            const photoDiv = createZodiacElement(persona);
                             const nameDiv = document.createElement('div');
                             nameDiv.classList.add('person-name');
                             nameDiv.textContent = persona.nombre;
@@ -1343,7 +1490,7 @@
                             personDiv.appendChild(nameDiv);
                             personDiv.appendChild(dateDiv);
                             personDiv.addEventListener('click', () => {
-                                openBirthdayModal(mesIndex, d, mesData[d]);
+                                openBirthdayModal(mesIndex, d, [persona]);
                             });
                             peopleContainer.appendChild(personDiv);
                         });
@@ -1358,10 +1505,8 @@
             const grid = document.getElementById('calendarGrid');
             grid.innerHTML = '';
 
-            // ✅ AÑO ACTUAL: obtenemos también el año
             const { mes: mesActual, dia: diaActual, anio } = getTodayInfo();
 
-            // ✅ AÑO ACTUAL: actualizamos el subtítulo con el año
             document.getElementById('calendarSubtitle').textContent =
                 `Calendario del año ${anio} · Haz clic en un día marcado para ver a los cumpleañeros`;
 
@@ -1371,7 +1516,6 @@
 
                 const monthName = document.createElement('div');
                 monthName.classList.add('month-name');
-                // ✅ AÑO ACTUAL: mostramos el año junto al nombre del mes
                 monthName.textContent = `${monthNames[month - 1]} ${anio}`;
                 monthDiv.appendChild(monthName);
 
@@ -1385,7 +1529,6 @@
                     daysGrid.appendChild(labelDiv);
                 });
 
-                // ✅ AÑO ACTUAL: usamos el año dinámico
                 const firstDay = new Date(anio, month - 1, 1).getDay();
                 const startOffset = (firstDay === 0) ? 6 : firstDay - 1;
 
@@ -1395,7 +1538,6 @@
                     daysGrid.appendChild(empty);
                 }
 
-                // ✅ AÑO ACTUAL: días del mes según el año dinámico
                 const daysInMonth = new Date(anio, month, 0).getDate();
                 const monthBirthdays = birthdays[month] || {};
 
@@ -1412,8 +1554,17 @@
                         dayDiv.classList.add('birthday');
                         const personas = monthBirthdays[day];
                         const nombres = personas.map(p => p.nombre);
+
+                        // ✅ Color según el elemento del primer cumpleañero del día
+                        const elementoDia = personas[0].signo.elemento;
+                        dayDiv.classList.add(`day-elemento-${elementoDia}`);
+
                         dayDiv.setAttribute('data-names', nombres.join(', '));
                         dayDiv.title = nombres.join(', ');
+                        dayDiv.setAttribute('role', 'button');
+                        dayDiv.setAttribute('tabindex', '0');
+                        dayDiv.setAttribute('aria-label',
+                            `${day} de ${monthNames[month - 1]}: ${nombres.join(', ')}`);
 
                         if (personas.length > 1) {
                             const badge = document.createElement('span');
@@ -1422,8 +1573,15 @@
                             dayDiv.appendChild(badge);
                         }
 
-                        dayDiv.addEventListener('click', () => {
+                        const handleClick = () => {
                             openBirthdayModal(month - 1, day, personas);
+                        };
+                        dayDiv.addEventListener('click', handleClick);
+                        dayDiv.addEventListener('keydown', (e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                handleClick();
+                            }
                         });
                     }
 
